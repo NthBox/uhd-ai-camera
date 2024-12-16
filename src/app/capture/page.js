@@ -1,10 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Camera from '@/components/Camera';
 
-export default function CapturePage() {
+const CapturePage = () => {
   const router = useRouter();
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -23,7 +23,6 @@ export default function CapturePage() {
       const data = await response.json();
       
       if (data.success) {
-        // Store the enhanced image URL in localStorage for the result page
         localStorage.setItem('enhancedImage', data.enhancedImage);
         router.push('/result');
       } else {
@@ -37,22 +36,36 @@ export default function CapturePage() {
     }
   };
 
+  useEffect(() => {
+    // Handle any async initialization here
+  }, []);
+
+  if (isProcessing) {
+    return (
+      <div className="min-h-screen bg-gray-900 text-white">
+        <header className="p-4">
+          <h1 className="text-2xl font-bold">Processing</h1>
+        </header>
+        <main className="container mx-auto px-4 py-8">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4" />
+            <p>Enhancing your photo...</p>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       <header className="p-4">
         <h1 className="text-2xl font-bold">Take Photo</h1>
       </header>
-
       <main className="container mx-auto px-4 py-8">
-        {isProcessing ? (
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4" />
-            <p>Enhancing your photo...</p>
-          </div>
-        ) : (
-          <Camera onCapture={handleCapture} />
-        )}
+        <Camera onCapture={handleCapture} />
       </main>
     </div>
   );
-} 
+};
+
+export default CapturePage; 
