@@ -94,26 +94,23 @@ The Ultra HD AI Camera mobile web app is designed to provide users with advanced
 
 **Web Technologies:**
 
-- Built with Next.js 13+ using the App Router architecture
-- Serverless architecture leveraging Next.js API routes and Edge Runtime
-- Deployed on Vercel platform for optimal performance and reliability
+- Front-end built with Next.js for responsiveness and performance.
+- Back-end implemented using Node.js to ensure scalability.
 
 **APIs and Integration:**
 
-- Integrate third-party APIs for AI-powered image analysis and enhancement
-- Utilize Next.js API routes for backend functionality
-- Edge Runtime for improved global performance and reduced latency
+- Integrate third-party APIs for AI-powered image analysis and enhancement.
+- Use RESTful APIs for effective communication between the front-end and back-end systems.
 
 **Storage and Data Management:**
 
-- Temporary local storage for immediate processing
-- Cloud storage for managing user preferences and photos in future development
-- Vercel Blob Storage for handling image uploads (future development)
+- Temporary local storage for immediate processing.
+- Cloud storage for managing user preferences and photos in future development.
 
 **Security Measures:**
 
-- End-to-end encryption for secure handling of data
-- Secure authentication (e.g., NextAuth.js) planned for user accounts (future development)
+- End-to-end encryption for secure handling of data.
+- Secure authentication (e.g., OAuth 2.0) planned for user accounts (future development).
 
 ---
 
