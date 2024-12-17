@@ -38,16 +38,33 @@ export default function Camera({ onCapture }) {
 
   const initializeCamera = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({
+      if (videoRef.current?.srcObject) {
+        const tracks = videoRef.current.srcObject.getTracks();
+        tracks.forEach(track => track.stop());
+      }
+
+      const constraints = {
         video: {
           facingMode: isFrontCamera ? 'user' : 'environment',
           width: { ideal: 1920 },
-          height: { ideal: 1080 }
+          height: { ideal: 1080 },
+          advanced: [{
+            facingMode: isFrontCamera ? 'user' : 'environment',
+            deviceId: { ideal: 'wide' }
+          }]
         }
-      });
+      };
+
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const videoDevices = devices.filter(device => device.kind === 'videoinput');
+      
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
       
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
+        videoRef.current.onloadedmetadata = () => {
+          videoRef.current.play();
+        };
       }
       setHasPermission(true);
     } catch (err) {
