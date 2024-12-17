@@ -39,6 +39,10 @@ export default function Camera({ onCapture }) {
     canvas.height = videoRef.current.videoHeight;
     
     const ctx = canvas.getContext('2d');
+    if (isFrontCamera) {
+      ctx.scale(-1, 1);
+      ctx.translate(-canvas.width, 0);
+    }
     ctx.drawImage(videoRef.current, 0, 0);
     
     const imageData = canvas.toDataURL('image/jpeg', 0.9);
@@ -59,7 +63,9 @@ export default function Camera({ onCapture }) {
         ref={videoRef}
         autoPlay
         playsInline
-        className="w-full aspect-[4/3] bg-gray-800 rounded-lg"
+        className={`w-full aspect-[4/3] bg-gray-800 rounded-lg ${
+          isFrontCamera ? 'scale-x-[-1]' : ''
+        }`}
       />
       <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-4">
         <button
