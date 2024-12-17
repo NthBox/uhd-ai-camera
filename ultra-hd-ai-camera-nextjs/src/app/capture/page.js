@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Camera from '@/components/Camera';
@@ -7,6 +8,21 @@ import Camera from '@/components/Camera';
 export default function CapturePage() {
   const router = useRouter();
   const [isProcessing, setIsProcessing] = useState(false);
+
+  useEffect(() => {
+    // Prevent scrolling
+    document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.width = '100%';
+    document.body.style.height = '100%';
+
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.height = '';
+    };
+  }, []);
 
   const handleCapture = async (imageData) => {
     setIsProcessing(true);
@@ -38,9 +54,9 @@ export default function CapturePage() {
   };
 
   return (
-    <>
+    <div className="fixed inset-0 w-screen h-screen bg-black" style={{ height: '100dvh' }}>
       {isProcessing ? (
-        <div className="fixed inset-0 bg-black flex items-center justify-center">
+        <div className="absolute inset-0 bg-black flex items-center justify-center">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4" />
             <p className="text-white">Starting enhancement process...</p>
@@ -49,6 +65,6 @@ export default function CapturePage() {
       ) : (
         <Camera onCapture={handleCapture} />
       )}
-    </>
+    </div>
   );
 }

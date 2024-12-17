@@ -10,7 +10,29 @@ export default function Camera({ onCapture }) {
 
   useEffect(() => {
     initializeCamera();
-  }, [isFrontCamera]);
+
+    const enterFullScreen = async () => {
+      try {
+        if (document.documentElement.requestFullscreen) {
+          await document.documentElement.requestFullscreen();
+        } else if (document.documentElement.webkitRequestFullscreen) {
+          await document.documentElement.webkitRequestFullscreen();
+        }
+      } catch (err) {
+        console.log('Fullscreen request failed:', err);
+      }
+    };
+
+    enterFullScreen();
+
+    return () => {
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      } else if (document.webkitFullscreenElement) {
+        document.webkitExitFullscreen();
+      }
+    };
+  }, []);
 
   const initializeCamera = async () => {
     try {
@@ -64,7 +86,10 @@ export default function Camera({ onCapture }) {
   };
 
   return (
-    <div className="relative h-screen bg-black">
+    <div className="relative h-screen w-screen bg-black overflow-hidden" style={{
+      height: '100dvh',
+      touchAction: 'none'
+    }}>
       {/* Top Controls */}
       <div className="absolute top-0 left-0 right-0 z-10 p-4 flex justify-between items-center">
         <div className="flex items-center space-x-2">
