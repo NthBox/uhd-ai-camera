@@ -11,15 +11,19 @@ export async function GET(request) {
     const predictionId = searchParams.get("id");
 
     if (!predictionId) {
+      console.log("Missing prediction ID");
       return NextResponse.json(
         { error: "Prediction ID is required" },
         { status: 400 }
       );
     }
 
+    console.log(`Checking status for prediction: ${predictionId}`);
     const prediction = await replicate.predictions.get(predictionId);
+    console.log(`Status response:`, prediction);
 
     if (prediction.error) {
+      console.error("Prediction error:", prediction.error);
       return NextResponse.json(
         { status: 'failed', error: prediction.error },
         { status: 500 }
@@ -27,6 +31,7 @@ export async function GET(request) {
     }
 
     if (prediction.status === 'succeeded') {
+      console.log("Enhancement succeeded:", prediction.output);
       return NextResponse.json({
         status: 'succeeded',
         output: prediction.output
