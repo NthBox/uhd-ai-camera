@@ -8,92 +8,36 @@ export default function ProcessingPage() {
   const router = useRouter();
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState(null);
-  const [processId, setProcessId] = useState(null);
-
-  const MAX_POLLING_TIME = 120000; // 2 minutes maximum polling time
-  const POLLING_INTERVAL = 2000; // 2 seconds between polls
 
   useEffect(() => {
-    const processImage = async () => {
+    const predictionId = localStorage.getItem('predictionId');
+    if (!predictionId) {
+      router.replace('/capture');
+      return;
+    }
+
+    const checkStatus = async () => {
       try {
-        const originalImage = localStorage.getItem('capturedImage');
-        if (!originalImage) {
-          console.log('🔴 [Client] No image found in localStorage');
-          router.replace('/capture');
-          return;
+        const response = await fetch(`/api/enhance/status?id=${predictionId}`);
+        const data = await response.json();
+
+        if (data.status === 'succeeded' && data.output) {
+          localStorage.setItem('enhancedImage', data.output[0]);
+          router.replace('/result');
+        } else if (data.status === 'failed' || data.error) {
+          throw new Error(data.error || 'Enhancement failed');
+        } else {
+          setProgress(prev => Math.min(prev + 5, 95));
         }
-
-        // Initial API call to start processing
-        if (!processId) {
-          console.log('🔵 [Client] Starting enhancement process');
-          const response = await fetch('/api/enhance', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ image: originalImage }),
-          });
-
-          const data = await response.json();
-          console.log('🔵 [Client] Enhancement process initiated:', data);
-          
-          if (data.error) {
-            console.error('🔴 [Client] Enhancement initiation error:', data.error);
-            throw new Error(data.error);
-          }
-          setProcessId(data.processId);
-          return;
-        }
-
-        let startTime = Date.now();
-        console.log('🔵 [Client] Starting polling for processId:', processId);
-        
-        // Start polling for result
-        const pollInterval = setInterval(async () => {
-          try {
-            // Check for timeout
-            if (Date.now() - startTime > MAX_POLLING_TIME) {
-              console.error('🔴 [Client] Process timed out');
-              clearInterval(pollInterval);
-              throw new Error('Enhancement process timed out. Please try again.');
-            }
-
-            const response = await fetch(`/api/enhance/status?processId=${processId}`);
-            const data = await response.json();
-            console.log('🔵 [Client] Poll response:', data);
-            
-            if (data.status === 'completed') {
-              console.log('🟢 [Client] Enhancement completed:', data.result);
-              clearInterval(pollInterval);
-              localStorage.setItem('enhancedImage', data.result);
-              router.replace('/result');
-            } else if (data.status === 'processing') {
-              setProgress(prev => Math.min(prev + 2, 95));
-            } else if (data.status === 'error') {
-              console.error('🔴 [Client] Enhancement error:', data.error);
-              throw new Error(data.error || 'Enhancement failed');
-            }
-          } catch (err) {
-            console.error('🔴 [Client] Polling error:', err);
-            clearInterval(pollInterval);
-            setError(err.message);
-          }
-        }, POLLING_INTERVAL);
-
-        // Cleanup
-        return () => {
-          console.log('🔵 [Client] Cleaning up polling interval');
-          clearInterval(pollInterval);
-        };
-
       } catch (err) {
-        console.error('🔴 [Client] Process error:', err);
+        console.error('Status check error:', err);
         setError(err.message);
       }
     };
 
-    processImage();
-  }, [router, processId]);
+    const intervalId = setInterval(checkStatus, 2000);
+    return () => clearInterval(intervalId);
+  }, [router]);
 
   if (error) {
     return (
@@ -116,7 +60,7 @@ export default function ProcessingPage() {
       <div className="w-64 h-2 bg-gray-700 rounded-full mb-4">
         <div 
           className="h-full bg-blue-600 rounded-full transition-all duration-300"
-          style={{ width: `${Math.min(progress, 100)}%` }}
+          style={{ width: `${progress}%` }}
         />
       </div>
       <p className="text-gray-400">This may take up to a minute...</p>

@@ -9,9 +9,7 @@ export async function POST(request) {
       auth: process.env.REPLICATE_API_TOKEN,
     });
 
-    console.log('Input image URL:', image);
-
-    // Create prediction
+    // Create prediction and return immediately
     const prediction = await replicate.predictions.create({
       version: "dfad41707589d68ecdccd1dfa600d55a208f9310748e44bfe35b4a6291453d5e",
       input: {
@@ -24,29 +22,10 @@ export async function POST(request) {
       }
     });
 
-    console.log('Prediction created:', prediction);
-
-    // Wait for the prediction to complete
-    let finalPrediction = await replicate.predictions.get(prediction.id);
-    while (finalPrediction.status !== 'succeeded' && finalPrediction.status !== 'failed') {
-      console.log('Waiting for prediction...', finalPrediction.status);
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second
-      finalPrediction = await replicate.predictions.get(prediction.id);
-    }
-
-    console.log('Final prediction:', finalPrediction);
-
-    if (finalPrediction.status === 'succeeded') {
-      const enhancedImageUrl = finalPrediction.output[0];
-      console.log('Enhanced image URL:', enhancedImageUrl);
-
-      return NextResponse.json({
-        success: true,
-        enhancedImage: enhancedImageUrl
-      });
-    }
-
-    throw new Error(finalPrediction.error || 'Prediction failed');
+    return NextResponse.json({
+      success: true,
+      predictionId: prediction.id
+    });
 
   } catch (error) {
     console.error('Enhancement error:', error);

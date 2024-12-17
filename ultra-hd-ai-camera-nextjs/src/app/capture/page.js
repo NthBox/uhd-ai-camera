@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Camera from '@/components/Camera';  // Make sure this path is correct
+import Camera from '@/components/Camera';
 
 export default function CapturePage() {
   const router = useRouter();
@@ -23,8 +23,9 @@ export default function CapturePage() {
       const data = await response.json();
       
       if (data.success) {
-        localStorage.setItem('enhancedImage', data.enhancedImage);
-        router.push('/result');
+        localStorage.setItem('predictionId', data.predictionId);
+        localStorage.setItem('originalImage', imageData);
+        router.push('/processing');
       } else {
         throw new Error(data.error || 'Enhancement failed');
       }
@@ -45,7 +46,7 @@ export default function CapturePage() {
         {isProcessing ? (
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4" />
-            <p>Enhancing your photo...</p>
+            <p>Starting enhancement process...</p>
           </div>
         ) : (
           <Camera onCapture={handleCapture} />
