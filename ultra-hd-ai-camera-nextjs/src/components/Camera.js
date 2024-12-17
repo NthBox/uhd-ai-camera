@@ -95,16 +95,18 @@ export default function Camera({ onCapture }) {
       {/* Top Controls */}
       <div className="absolute top-0 left-0 right-0 z-10 p-4 flex justify-between items-center">
         <div className="flex items-center space-x-2">
-          <button className="w-8 h-8 flex items-center justify-center bg-yellow-400 rounded-full">
+          {/* save for future features */}
+          {/* <button className="w-8 h-8 flex items-center justify-center bg-yellow-400 rounded-full">
             <span className="text-black text-xl">⚡</span>
           </button>
           <div className="bg-gray-800 rounded-full px-2 py-1">
             <span className="text-white">-1.0</span>
-          </div>
+          </div> */}
         </div>
         <div className="flex items-center space-x-4">
-          <span className="text-white">RAW MAX</span>
-          <button className="w-8 h-8 rounded-full border-2 border-white"></button>
+          <span className="text-white">UHD AI</span>
+          {/* save for future features */}
+          {/* <button className="w-8 h-8 rounded-full border-2 border-white"></button> */}
         </div>
       </div>
 
@@ -119,22 +121,24 @@ export default function Camera({ onCapture }) {
         style={{ transform: `scale(${zoomLevel})` }}
       />
 
-      {/* Zoom Controls */}
-      <div className="absolute bottom-32 left-0 right-0 flex justify-center space-x-8 text-white">
+      {/* Zoom Controls save for future scaling */}
+      {/* <div className="absolute bottom-32 left-0 right-0 flex justify-center space-x-8 text-white">
         <button onClick={() => handleZoomChange(0.5)} className="opacity-60">0.5</button>
         <button onClick={() => handleZoomChange(1.5)} className="text-yellow-400">1.5x</button>
         <button onClick={() => handleZoomChange(2)} className="opacity-60">2</button>
         <button onClick={() => handleZoomChange(3)} className="opacity-60">3</button>
-      </div>
+      </div> */}
 
       {/* Bottom Controls */}
       <div className="absolute bottom-0 left-0 right-0 pb-8 px-4">
-        <div className="flex justify-between items-center mb-8">
-          <button className="text-white opacity-60">CINEMATIC</button>
-          <button className="text-white opacity-60">VIDEO</button>
+        <div className="flex justify-center items-center mb-8">
+          {/* save for future features */}
+          {/* <button className="text-white opacity-60">CINEMATIC</button>
+          <button className="text-white opacity-60">VIDEO</button> */}
           <button className="text-yellow-400">PHOTO</button>
-          <button className="text-white opacity-60">PORTRAIT</button>
-          <button className="text-white opacity-60">PANO</button>
+          {/* save for future features */}
+          {/* <button className="text-white opacity-60">PORTRAIT</button>
+          <button className="text-white opacity-60">PANO</button> */}
         </div>
         
         <div className="flex justify-between items-center">
