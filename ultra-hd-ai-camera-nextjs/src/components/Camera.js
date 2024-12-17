@@ -139,7 +139,7 @@ export default function Camera({ onCapture }) {
         playsInline
         className={`w-full h-full object-cover`}
         style={{ 
-          transform: isFrontCamera ? `scaleX(-1) scale(${zoomLevel})` : `scale(${zoomLevel})`,
+          transform: isFrontCamera ? 'scaleX(-1)' : `scale(${zoomLevel})`,
         }}
       />
 
