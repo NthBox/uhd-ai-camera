@@ -137,10 +137,10 @@ export default function Camera({ onCapture }) {
         ref={videoRef}
         autoPlay
         playsInline
-        className={`w-full h-full object-cover ${
-          isFrontCamera ? 'scale-x-[-1]' : ''
-        }`}
-        style={{ transform: `scale(${zoomLevel})` }}
+        className={`w-full h-full object-cover`}
+        style={{ 
+          transform: isFrontCamera ? `scaleX(-1) scale(${zoomLevel})` : `scale(${zoomLevel})`,
+        }}
       />
 
       {/* Zoom Controls save for future scaling */}
