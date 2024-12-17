@@ -6,11 +6,9 @@ export default function Camera({ onCapture }) {
   const videoRef = useRef(null);
   const [hasPermission, setHasPermission] = useState(null);
   const [isFrontCamera, setIsFrontCamera] = useState(false);
-  const [zoomLevel, setZoomLevel] = useState(1.5); // Default zoom level
+  const [zoomLevel, setZoomLevel] = useState(1.5);
 
   useEffect(() => {
-    initializeCamera();
-
     const enterFullScreen = async () => {
       try {
         if (document.documentElement.requestFullscreen) {
@@ -33,6 +31,10 @@ export default function Camera({ onCapture }) {
       }
     };
   }, []);
+
+  useEffect(() => {
+    initializeCamera();
+  }, [isFrontCamera]);
 
   const initializeCamera = async () => {
     try {
