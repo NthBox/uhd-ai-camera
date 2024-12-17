@@ -16,7 +16,7 @@ export async function POST(request) {
         image: image,
         prompt: "masterpiece, best quality, highres, <lora:more_details:0.5> <lora:SDXLrender_v2.0:1>, red camera quality, red camera lens, red camera sensor, red camera, hollywood cinematic lighting, blockbuster movie color grading",
         negative_prompt: "(worst quality, low quality, normal quality:2) JuggernautNegative-neg",
-        scale_factor: 2,
+        scale_factor: 4,
         dynamic: 9,
         creativity: 0.1,
         resemblance: 1,
