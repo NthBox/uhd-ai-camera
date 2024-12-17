@@ -6,6 +6,7 @@ export default function Camera({ onCapture }) {
   const videoRef = useRef(null);
   const [hasPermission, setHasPermission] = useState(null);
   const [isFrontCamera, setIsFrontCamera] = useState(false);
+  const [zoomLevel, setZoomLevel] = useState(1.5); // Default zoom level
 
   useEffect(() => {
     initializeCamera();
@@ -57,29 +58,75 @@ export default function Camera({ onCapture }) {
     setIsFrontCamera(!isFrontCamera);
   };
 
+  const handleZoomChange = (level) => {
+    setZoomLevel(level);
+    // Note: Actual zoom implementation would require additional camera API support
+  };
+
   return (
-    <div className="relative">
+    <div className="relative h-screen bg-black">
+      {/* Top Controls */}
+      <div className="absolute top-0 left-0 right-0 z-10 p-4 flex justify-between items-center">
+        <div className="flex items-center space-x-2">
+          <button className="w-8 h-8 flex items-center justify-center bg-yellow-400 rounded-full">
+            <span className="text-black text-xl">⚡</span>
+          </button>
+          <div className="bg-gray-800 rounded-full px-2 py-1">
+            <span className="text-white">-1.0</span>
+          </div>
+        </div>
+        <div className="flex items-center space-x-4">
+          <span className="text-white">RAW MAX</span>
+          <button className="w-8 h-8 rounded-full border-2 border-white"></button>
+        </div>
+      </div>
+
+      {/* Camera View */}
       <video
         ref={videoRef}
         autoPlay
         playsInline
-        className={`w-full aspect-[4/3] bg-gray-800 rounded-lg ${
+        className={`w-full h-full object-cover ${
           isFrontCamera ? 'scale-x-[-1]' : ''
         }`}
+        style={{ transform: `scale(${zoomLevel})` }}
       />
-      <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-4">
-        <button
-          onClick={capturePhoto}
-          className="bg-white text-gray-900 px-6 py-2 rounded-full font-medium"
-        >
-          Capture
-        </button>
-        <button
-          onClick={toggleCamera}
-          className="bg-gray-600 text-white px-6 py-2 rounded-full font-medium"
-        >
-          Flip
-        </button>
+
+      {/* Zoom Controls */}
+      <div className="absolute bottom-32 left-0 right-0 flex justify-center space-x-8 text-white">
+        <button onClick={() => handleZoomChange(0.5)} className="opacity-60">0.5</button>
+        <button onClick={() => handleZoomChange(1.5)} className="text-yellow-400">1.5x</button>
+        <button onClick={() => handleZoomChange(2)} className="opacity-60">2</button>
+        <button onClick={() => handleZoomChange(3)} className="opacity-60">3</button>
+      </div>
+
+      {/* Bottom Controls */}
+      <div className="absolute bottom-0 left-0 right-0 pb-8 px-4">
+        <div className="flex justify-between items-center mb-8">
+          <button className="text-white opacity-60">CINEMATIC</button>
+          <button className="text-white opacity-60">VIDEO</button>
+          <button className="text-yellow-400">PHOTO</button>
+          <button className="text-white opacity-60">PORTRAIT</button>
+          <button className="text-white opacity-60">PANO</button>
+        </div>
+        
+        <div className="flex justify-between items-center">
+          <div className="w-16 h-16 rounded-lg overflow-hidden">
+            {/* Thumbnail preview would go here */}
+          </div>
+          <button
+            onClick={capturePhoto}
+            className="w-20 h-20 rounded-full border-4 border-white flex items-center justify-center"
+          >
+            <div className="w-16 h-16 bg-white rounded-full"></div>
+          </button>
+          <button
+            onClick={toggleCamera}
+            className="w-16 h-16 rounded-full bg-gray-800/50 flex items-center justify-center"
+          >
+            <span className="text-white text-2xl">⟲</span>
+          </button>
+        </div>
       </div>
     </div>
   );

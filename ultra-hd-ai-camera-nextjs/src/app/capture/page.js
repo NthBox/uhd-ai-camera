@@ -38,20 +38,17 @@ export default function CapturePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      <header className="p-4">
-        <h1 className="text-2xl font-bold">Take Photo</h1>
-      </header>
-      <main className="container mx-auto px-4 py-8">
-        {isProcessing ? (
+    <>
+      {isProcessing ? (
+        <div className="fixed inset-0 bg-black flex items-center justify-center">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4" />
-            <p>Starting enhancement process...</p>
+            <p className="text-white">Starting enhancement process...</p>
           </div>
-        ) : (
-          <Camera onCapture={handleCapture} />
-        )}
-      </main>
-    </div>
+        </div>
+      ) : (
+        <Camera onCapture={handleCapture} />
+      )}
+    </>
   );
 }
