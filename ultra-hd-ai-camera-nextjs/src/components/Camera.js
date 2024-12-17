@@ -6,7 +6,7 @@ export default function Camera({ onCapture }) {
   const videoRef = useRef(null);
   const [hasPermission, setHasPermission] = useState(null);
   const [isFrontCamera, setIsFrontCamera] = useState(false);
-  const [zoomLevel, setZoomLevel] = useState(1.5);
+  const [zoomLevel, setZoomLevel] = useState(1.0);
 
   useEffect(() => {
     const enterFullScreen = async () => {
