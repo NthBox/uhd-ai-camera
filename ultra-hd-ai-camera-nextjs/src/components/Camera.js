@@ -84,8 +84,13 @@ export default function Camera({ onCapture }) {
     if (isFrontCamera) {
       ctx.scale(-1, 1);
       ctx.translate(-canvas.width, 0);
+      ctx.drawImage(videoRef.current, 0, 0);
+      
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.drawImage(videoRef.current, 0, 0);
+    } else {
+      ctx.drawImage(videoRef.current, 0, 0);
     }
-    ctx.drawImage(videoRef.current, 0, 0);
     
     const imageData = canvas.toDataURL('image/jpeg', 0.9);
     onCapture(imageData);
