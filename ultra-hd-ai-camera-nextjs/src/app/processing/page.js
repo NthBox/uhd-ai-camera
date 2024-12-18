@@ -27,7 +27,7 @@ export default function ProcessingPage() {
         } else if (data.status === 'failed' || data.error) {
           throw new Error(data.error || 'Enhancement failed');
         } else {
-          setProgress(prev => Math.min(prev + 5, 95));
+          setProgress(prev => Math.min(prev + 1.58, 95));
         }
       } catch (err) {
         console.error('Status check error:', err);
@@ -63,7 +63,7 @@ export default function ProcessingPage() {
           style={{ width: `${progress}%` }}
         />
       </div>
-      <p className="text-gray-400">This may take up to a minute...</p>
+      <p className="text-gray-400">This may take up to 2 minutes...</p>
     </div>
   );
 }
