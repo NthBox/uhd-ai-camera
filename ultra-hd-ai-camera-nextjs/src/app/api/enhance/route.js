@@ -34,7 +34,7 @@ export async function POST(request) {
         mask: undefined,
         handfix: "disabled",
         pattern: false,
-        output_format: "jpg"
+        output_format: "png"
       }
     });
 

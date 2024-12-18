@@ -33,7 +33,7 @@ export default function ResultPage() {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'enhanced-photo.jpg';
+      a.download = 'enhanced-photo.png';
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);
