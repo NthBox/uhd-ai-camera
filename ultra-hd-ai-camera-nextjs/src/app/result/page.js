@@ -30,17 +30,28 @@ export default function ResultPage() {
     try {
       const response = await fetch(enhancedImageUrl);
       const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'enhanced-photo.png';
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
+
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+      
+      if (isIOS && navigator.share) {
+        const file = new File([blob], 'enhanced-photo.png', { type: 'image/png' });
+        await navigator.share({
+          files: [file],
+          title: 'Enhanced Photo',
+        });
+      } else {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'enhanced-photo.png';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      }
     } catch (error) {
       console.error('Download error:', error);
-      alert('Failed to download image');
+      alert('Failed to download/share image');
     }
   };
 
