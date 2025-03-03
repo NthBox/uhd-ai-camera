@@ -1,6 +1,19 @@
+'use client';
+
 import Link from 'next/link'
+import { useAuth } from "@clerk/nextjs";
+import { useEffect } from 'react';
 
 export default function Home() {
+  const { userId } = useAuth();
+
+  useEffect(() => {
+    if (!userId) {
+      window.location.href = process.env.NEXT_PUBLIC_CLERK_SIGN_IN_URL;
+      return;
+    }
+  }, [userId]);
+
   return (
     <main className="min-h-screen p-4">
       <div className="max-w-md mx-auto space-y-8">

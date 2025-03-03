@@ -4,12 +4,21 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Camera from '@/components/Camera';
+import { useAuth } from "@clerk/nextjs";
 
 export default function CapturePage() {
   const router = useRouter();
   const [isProcessing, setIsProcessing] = useState(false);
+  const { userId } = useAuth();
 
   useEffect(() => {
+    // Check authentication
+    if (!userId) {
+      // Redirect to Clerk's hosted sign-in page
+      window.location.href = process.env.NEXT_PUBLIC_CLERK_SIGN_IN_URL;
+      return;
+    }
+
     // Prevent scrolling
     document.body.style.overflow = 'hidden';
     document.body.style.position = 'fixed';
@@ -22,7 +31,7 @@ export default function CapturePage() {
       document.body.style.width = '';
       document.body.style.height = '';
     };
-  }, []);
+  }, [userId, router]);
 
   const handleCapture = async (imageData) => {
     setIsProcessing(true);

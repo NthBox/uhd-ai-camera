@@ -1,5 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { ClerkProvider } from '@clerk/nextjs'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,31 +14,34 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: 'Ultra HD AI Camera',
-  description: 'AI-powered camera app',
-  viewport: {
-    viewportFit: 'cover',
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 1,
-    userScalable: 'no'
-  },
-  themeColor: '#000000',
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: 'black-translucent',
-    title: 'Ultra HD Camera'
-  }
+  description: 'AI-powered camera enhancement app',
 };
+
+// New viewport export
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: 'cover',
+};
+
+// New theme configuration
+export const themeColor = [
+  { media: '(prefers-color-scheme: dark)', color: '#000000' },
+  { media: '(prefers-color-scheme: light)', color: '#000000' },
+];
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <head>
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no, maximum-scale=1" />
-      </head>
-      <body className="bg-black">{children}</body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <head>
+          <meta name="apple-mobile-web-app-capable" content="yes" />
+          <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        </head>
+        <body className="bg-black">{children}</body>
+      </html>
+    </ClerkProvider>
   );
 }
