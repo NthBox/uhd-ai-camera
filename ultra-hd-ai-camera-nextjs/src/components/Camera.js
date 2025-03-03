@@ -1,12 +1,14 @@
 'use client';
 
 import { useRef, useState, useEffect } from 'react';
+import { useAuth } from "@clerk/nextjs";
 
 export default function Camera({ onCapture }) {
   const videoRef = useRef(null);
   const [hasPermission, setHasPermission] = useState(null);
   const [isFrontCamera, setIsFrontCamera] = useState(false);
   const [zoomLevel, setZoomLevel] = useState(1.0);
+  const { signOut } = useAuth();
 
   useEffect(() => {
     const enterFullScreen = async () => {
@@ -117,18 +119,10 @@ export default function Camera({ onCapture }) {
       {/* Top Controls */}
       <div className="absolute top-0 left-0 right-0 z-10 p-4 flex justify-between items-center">
         <div className="flex items-center space-x-2">
-          {/* save for future features */}
-          {/* <button className="w-8 h-8 flex items-center justify-center bg-yellow-400 rounded-full">
-            <span className="text-black text-xl">⚡</span>
-          </button>
-          <div className="bg-gray-800 rounded-full px-2 py-1">
-            <span className="text-white">-1.0</span>
-          </div> */}
+          <button onClick={signOut} className="text-white">Sign Out</button>
         </div>
         <div className="flex items-center space-x-4">
           <span className="text-white">UHD AI</span>
-          {/* save for future features */}
-          {/* <button className="w-8 h-8 rounded-full border-2 border-white"></button> */}
         </div>
       </div>
 
