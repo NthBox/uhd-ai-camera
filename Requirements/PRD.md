@@ -104,6 +104,12 @@ The Ultra HD AI Camera mobile web app is designed to provide users with advanced
 - Utilize Next.js API routes for backend functionality
 - Edge Runtime for improved global performance and reduced latency
 
+**Authentication and Security:**
+
+- Integrate Clerk for user authentication to secure the capture page
+- Use Clerk's authentication features to manage user sessions and protect sensitive pages
+- Plan for secure authentication (e.g., NextAuth.js) for user accounts (future development)
+
 **Storage and Data Management:**
 
 - Temporary local storage for immediate processing
@@ -172,6 +178,7 @@ The Ultra HD AI Camera mobile web app is designed to provide users with advanced
 
 - End-to-end encryption for secure data handling.
 - Secure authentication (OAuth 2.0) for user accounts (planned).
+- Implement Clerk authentication to protect the capture page and ensure only authorized users can access it.
 
 **Compliance (Planned):**
 

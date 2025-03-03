@@ -40,8 +40,13 @@ This technical specification provides a comprehensive blueprint for the Ultra HD
 - **Integration:** RESTful calls with a POST request containing the image data (base64 or a signed URL) and parameters for upscaling.
 - **Response:** Enhanced image data returned as base64 or URL.
 
+### Authentication and Security:
+- **Authentication:** Integrate Clerk for user authentication to secure the capture page.
+- **Session Management:** Use Clerk's features to manage user sessions and protect sensitive pages.
+- **Future Plans:** Secure authentication (e.g., NextAuth.js) for user accounts.
+
 ### Storage (Future Use):
-- **Local:** Browser’s local storage or IndexedDB for temporary storage.
+- **Local:** Browser's local storage or IndexedDB for temporary storage.
 - **Cloud Storage (Future):** S3 (or similar) for registered user galleries.
 
 ---
@@ -119,11 +124,15 @@ This technical specification provides a comprehensive blueprint for the Ultra HD
     "image": "<base64 image>",
     "parameters": { "upscaleFactor": 2 }
   }
-Security & Validation:
-Validate all incoming requests to /api/enhance:
-Ensure imageData is a properly formatted base64 string.
-Limit request size (express.json({ limit: '2mb' })).
-Add rate limiting.
+  ```
+
+### Security & Validation:
+- Validate all incoming requests to /api/enhance:
+  - Ensure imageData is a properly formatted base64 string.
+  - Limit request size (express.json({ limit: '2mb' })).
+  - Add rate limiting.
+- Implement Clerk authentication to protect the capture page and ensure only authorized users can access it.
+
 5. Data Handling & Storage
 Local Temporaries:
 Captured image stored in memory or local state before sending to back-end.
