@@ -7,12 +7,19 @@ export default clerkMiddleware({
     '/sign-in(.*)',
     '/sign-up(.*)',
     '/(api|trpc)(.*)'
+  ],
+  // Add protected routes that require authentication
+  protectedRoutes: [
+    '/capture(.*)',
+    '/processing(.*)'
   ]
 });
 
 export const config = {
   matcher: [
     '/((?!.+\\.[\\w]+$|_next).*)', // exclude static files
-    '/(api|trpc)(.*)' // include API routes
+    '/(api|trpc)(.*)', // include API routes
+    '/capture(.*)', // explicitly include capture route
+    '/processing(.*)' // include processing route
   ],
 }; 

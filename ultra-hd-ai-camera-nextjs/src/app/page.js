@@ -2,17 +2,9 @@
 
 import Link from 'next/link'
 import { useAuth } from "@clerk/nextjs";
-import { useEffect } from 'react';
 
 export default function Home() {
   const { userId } = useAuth();
-
-  useEffect(() => {
-    if (!userId) {
-      window.location.href = process.env.NEXT_PUBLIC_CLERK_SIGN_IN_URL;
-      return;
-    }
-  }, [userId]);
 
   return (
     <main className="min-h-screen p-4">
@@ -38,10 +30,10 @@ export default function Home() {
         </div>
 
         <Link 
-          href="/capture"
+          href={userId ? "/capture" : "/sign-in"}
           className="block w-full py-3 px-4 bg-blue-600 text-white text-center rounded-lg font-medium hover:bg-blue-700 transition-colors"
         >
-          Capture Your Moment
+          {userId ? "Capture Your Moment" : "Sign in to Start"}
         </Link>
       </div>
     </main>

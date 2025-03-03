@@ -4,21 +4,14 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Camera from '@/components/Camera';
-import { useAuth } from "@clerk/nextjs";
+import { useAuth, RedirectToSignIn } from "@clerk/nextjs";
 
 export default function CapturePage() {
   const router = useRouter();
   const [isProcessing, setIsProcessing] = useState(false);
-  const { userId } = useAuth();
+  const { userId, isLoaded } = useAuth();
 
   useEffect(() => {
-    // Check authentication
-    if (!userId) {
-      // Redirect to Clerk's hosted sign-in page
-      window.location.href = process.env.NEXT_PUBLIC_CLERK_SIGN_IN_URL;
-      return;
-    }
-
     // Prevent scrolling
     document.body.style.overflow = 'hidden';
     document.body.style.position = 'fixed';
@@ -26,12 +19,13 @@ export default function CapturePage() {
     document.body.style.height = '100%';
 
     return () => {
+      // Cleanup
       document.body.style.overflow = '';
       document.body.style.position = '';
       document.body.style.width = '';
       document.body.style.height = '';
     };
-  }, [userId, router]);
+  }, []);
 
   const handleCapture = async (imageData) => {
     setIsProcessing(true);
@@ -61,6 +55,18 @@ export default function CapturePage() {
       setIsProcessing(false);
     }
   };
+
+  // Show loading state while Clerk loads
+  if (!isLoaded) {
+    return <div className="min-h-screen flex items-center justify-center bg-black">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white" />
+    </div>;
+  }
+
+  // If no user is signed in, redirect to sign-in
+  if (!userId) {
+    return <RedirectToSignIn />;
+  }
 
   return (
     <div className="fixed inset-0 w-screen h-screen bg-black" style={{ height: '100dvh' }}>
