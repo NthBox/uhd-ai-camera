@@ -4,7 +4,8 @@ import Link from 'next/link'
 import { useAuth } from "@clerk/nextjs";
 
 export default function Home() {
-  const { userId } = useAuth();
+  // Add error handling for Clerk initialization
+  const { userId, isLoaded } = useAuth();
 
   return (
     <main className="min-h-screen p-4">
@@ -29,12 +30,18 @@ export default function Home() {
           </div>
         </div>
 
-        <Link 
-          href={userId ? "/capture" : "/sign-in"}
-          className="block w-full py-3 px-4 bg-blue-600 text-white text-center rounded-lg font-medium hover:bg-blue-700 transition-colors"
-        >
-          {userId ? "Capture Your Moment" : "Sign in to Start"}
-        </Link>
+        {isLoaded ? (
+          <Link 
+            href={userId ? "/capture" : "/sign-in"}
+            className="block w-full py-3 px-4 bg-blue-600 text-white text-center rounded-lg font-medium hover:bg-blue-700 transition-colors"
+          >
+            {userId ? "Capture Your Moment" : "Sign in to Start"}
+          </Link>
+        ) : (
+          <div className="block w-full py-3 px-4 bg-gray-400 text-white text-center rounded-lg font-medium">
+            Loading...
+          </div>
+        )}
       </div>
     </main>
   )
